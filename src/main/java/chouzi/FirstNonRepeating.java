@@ -16,7 +16,7 @@ public class FirstNonRepeating {
             }
         }
         if (map.size() > 0) {
-            return map.entrySet().iterator().next().getKey();
+            return map.keySet().iterator().next();
         } else {
             return ' ';
         }
