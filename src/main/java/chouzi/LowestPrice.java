@@ -33,23 +33,24 @@ public class LowestPrice {
                 start = next[0];
                 end = next[1];
                 currPrice = next[2];
-            }
-            if (next[2] < currPrice) {  //found a cheaper interval
-                if (start < next[0]) {
-                    res.add(asList(start, next[0], currPrice)); // new interval is found
+            } else {
+                if (next[2] < currPrice) {  //found a cheaper interval
+                    if (start < next[0]) {
+                        res.add(asList(start, next[0], currPrice)); // new interval is found
+                    }
+                    if (end > next[1]) {
+                        // if current interval continues after the new cheaper interval ends
+                        // create another interval starting at the cheaper interval's end
+                        queue.offer(new int[]{next[1], end, currPrice});
+                    }
+                    // update current interval to the cheaper one
+                    start = next[0];
+                    end = next[1];
+                    currPrice = next[2];
+                } else if (next[1] > end) {
+                    // if next interval is not cheaper but continues after current cheaper one
+                    queue.offer(new int[]{end, next[1], next[2]});
                 }
-                if (end > next[1]) {
-                    // if current interval continues after the new cheaper interval ends
-                    // create another interval starting at the cheaper interval's end
-                    queue.offer(new int[]{next[1], end, currPrice});
-                }
-                // update current interval to the cheaper one
-                start = next[0];
-                end = next[1];
-                currPrice = next[2];
-            } else if (next[1] > end) {
-                // if next interval is not cheaper but continues after current cheaper one
-                queue.offer(new int[] {end, next[1], next[2]});
             }
         }
         if (end > start) {  // last interval
